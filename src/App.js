@@ -1,10 +1,11 @@
 import React from 'react';
 import EmployeeForm from './components/EmployeeForm';
+import './App.css';
 
 function App() {
   return (
-    <div>
-      <h2>Welcome to the Home Page</h2>
+    <div className="App">
+      <h1>Welcome to the Home Page</h1>
       <EmployeeForm />
     </div>
   );

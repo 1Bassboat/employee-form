@@ -1,69 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './EmployeeForm.css';
 
-class EmployeeForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      email: '',
-      phone: ''
-    };
-  }
+function EmployeeForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [department, setDepartment] = useState('');
+  const [employees, setEmployees] = useState([]);
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    const storedEmployees = localStorage.getItem('employees');
+    if (storedEmployees) {
+      setEmployees(JSON.parse(storedEmployees));
+    }
+  }, []);
 
-  handleSubmit = (e) => {
+  useEffect(() => {
+    localStorage.setItem('employees', JSON.stringify(employees));
+  }, [employees]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitted data:', this.state);
-    this.setState({ name: '', email: '', phone: '' });
+    if (!name || !email || !department) return;
+
+    const newEmployee = { name, email, department };
+    setEmployees([...employees, newEmployee]);
+
+    // Reset form
+    setName('');
+    setEmail('');
+    setDepartment('');
   };
 
-  render() {
-    return (
-      <div className="employee-form-container">
-        <form className="employee-form" onSubmit={this.handleSubmit}>
-          <h2 className="form-title">Add Employee</h2>
+  return (
+    <div className="form-container">
+      <h2>Employee Form</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Department"
+          value={department}
+          onChange={(e) => setDepartment(e.target.value)}
+        />
+        <button type="submit">Submit</button>
+      </form>
 
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Name"
-            value={this.state.name}
-            onChange={this.handleChange}
-          />
-
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-
-          <label htmlFor="phone">Phone:</label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            placeholder="Phone"
-            value={this.state.phone}
-            onChange={this.handleChange}
-          />
-
-          <button type="submit">Add</button>
-        </form>
-
-        <h2 className="employee-list-title">Employee List</h2>
-      </div>
-    );
-  }
+      <h3>Saved Employees</h3>
+      <ul>
+        {employees.map((emp, index) => (
+          <li key={index}>
+            {emp.name} - {emp.email} - {emp.department}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default EmployeeForm;
