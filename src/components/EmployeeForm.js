@@ -1,39 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import './EmployeeForm.css';
+import React, { useState } from 'react';
 
-function EmployeeForm() {
+function EmployeeForm({ addEmployee }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [department, setDepartment] = useState('');
-  const [employees, setEmployees] = useState([]);
-
-  useEffect(() => {
-    const storedEmployees = localStorage.getItem('employees');
-    if (storedEmployees) {
-      setEmployees(JSON.parse(storedEmployees));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('employees', JSON.stringify(employees));
-  }, [employees]);
+  const [phone, setPhone] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !email || !department) return;
-
-    const newEmployee = { name, email, department };
-    setEmployees([...employees, newEmployee]);
-
-    // Reset form
-    setName('');
-    setEmail('');
-    setDepartment('');
+    if (name && email && phone) {
+      addEmployee({ name, email, phone });
+      setName('');
+      setEmail('');
+      setPhone('');
+    }
   };
 
   return (
-    <div className="form-container">
-      <h2>Employee Form</h2>
+    <div>
+      <h1>Add Employee</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -49,21 +33,12 @@ function EmployeeForm() {
         />
         <input
           type="text"
-          placeholder="Department"
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
+          placeholder="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
         />
-        <button type="submit">Submit</button>
+        <button type="submit">Add</button>
       </form>
-
-      <h3>Saved Employees</h3>
-      <ul>
-        {employees.map((emp, index) => (
-          <li key={index}>
-            {emp.name} - {emp.email} - {emp.department}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
