@@ -1,0 +1,43 @@
+/* src/ListStyle.css */
+.list-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.list-container h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+.list-item {
+  background-color: #e9f4ff;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  list-style: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.list-item a {
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.list-item a:hover {
+  text-decoration: underline;
+}
+
+.add-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.add-link:hover {
+  text-decoration: underline;
+}
